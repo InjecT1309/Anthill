@@ -1,6 +1,12 @@
 #ifndef MAP2D_H
 #define MAP2D_H
 
+#include <cstdlib>
+#include <ctime>
+#include <string>
+
+using std::string;
+using std::srand;
 
 class Map2D
 {
