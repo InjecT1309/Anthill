@@ -8,14 +8,14 @@ class Point2D
         Point2D(int x, int y);
         virtual ~Point2D();
 
-        void set_enum();
 
     protected:
 
     private:
         int m_x;
         int m_y;
-        enum object;
+        enum m_Fill{Empty, Grass, Water, Branch, Food, Scent, BlackAnthill, RedAnthill, RedAnt, BlackAnt};
+		int m_scent_level;
 };
 
 #endif // POINT2D_H

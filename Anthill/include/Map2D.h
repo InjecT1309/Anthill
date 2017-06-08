@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <string>
+#include "Point2D.h"
 
 using std::string;
 using std::srand;
@@ -21,6 +22,8 @@ class Map2D
     private:
         int m_height;
         int m_width;
+        Point2D map[800][600];
+        
 
 };
 
