@@ -1,21 +1,31 @@
-#include <SFML/Graphics.hpp>
+#include <iostream>
+#include <string>
+
+#include "Map2D.h"
+
+using std::cin;
+using std::cout;
+using std::endl;
+using std::string;
+
+string displayObject(int object)
+{
+    string possibilities[10] = {"   ", "-G-", "-W-", "-B-", "-F-", "   ", "R-A", "B-A", "RAH", "BAH"};
+
+    return possibilities[object];
+}
 
 int main()
 {
-   
+    Map2D Map;
 
-    while (window.isOpen())
+    for(int y=0; y<800; y++)
     {
-        sf::Event event;
-        while (window.pollEvent(event))
+        for(int x=0; x<600; x++)
         {
-            if (event.type == sf::Event::Closed)
-                window.close();
+            cout << displayObject(Map.WhatIsHere(x, y)) << " ";
         }
-
-        window.clear();
-
-        window.display();
+        cout << endl;
     }
 
     return 0;

@@ -3,19 +3,15 @@
 
 #include <cstdlib>
 #include <ctime>
-#include <string>
-#include "Point2D.h"
 
-using std::string;
-using std::srand;
+#include "Point2D.h"
 
 class Map2D
 {
     public:
-        Map2D(int x, int y);
+        Map2D();
         virtual ~Map2D();
-        void WhatIsHere(int x, int y);
-
+        int WhatIsHere(int x, int y);
 
     protected:
 
@@ -23,8 +19,6 @@ class Map2D
         int m_height;
         int m_width;
         Point2D map[800][600];
-        
-
 };
 
 #endif // MAP2D_H
