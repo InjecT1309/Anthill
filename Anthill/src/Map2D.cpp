@@ -5,7 +5,7 @@ Map2D::Map2D()
     srand(time(NULL));
 }
 
-Point2D Map2D::WhatIsHere(int x, int y)
+string Map2D::WhatIsHere(int x, int y)
 {
     return m_map[x][y].What_is_here();
 }

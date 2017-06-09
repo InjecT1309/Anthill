@@ -3,15 +3,17 @@
 
 #include <cstdlib>
 #include <ctime>
-
+#include <string>
 #include "Point2D.h"
+
+using std::string;
 
 class Map2D
 {
     public:
         Map2D();
         virtual ~Map2D();
-        Point2D WhatIsHere(int x, int y);
+        string WhatIsHere(int x, int y);
 
     protected:
 
