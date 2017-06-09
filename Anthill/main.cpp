@@ -12,7 +12,8 @@ using std::string;
 
 int main()
 {
-    Map2D Map;
+    Map2D *Map = new Map2D();
+    
 
     return 0;
 }
