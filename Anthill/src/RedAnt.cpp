@@ -1,4 +1,4 @@
-#include "RedAnt.h"
+#include "../include/RedAnt.h"
 
 RedAnt::RedAnt()
 {

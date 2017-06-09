@@ -1,4 +1,4 @@
-#include "Ant.h"
+#include "../include/Ant.h"
 
 Ant::Ant()
 {

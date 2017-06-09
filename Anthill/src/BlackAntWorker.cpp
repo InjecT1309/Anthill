@@ -1,4 +1,4 @@
-#include "BlackAntWorker.h"
+#include "../include/BlackAntWorker.h"
 
 BlackAntWorker::BlackAntWorker()
 {
