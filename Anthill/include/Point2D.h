@@ -12,8 +12,8 @@ class Point2D
         Point2D();
         virtual ~Point2D();
 
+        void fill_point(int x, int y, int object, int scent_level);
         string What_is_here();
-
 
     protected:
 
