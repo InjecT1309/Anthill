@@ -3,6 +3,9 @@
 
 #include <cstdlib>
 #include <string>
+#include <cmath>
+
+#include "Fill.h"
 
 using std::string;
 
@@ -10,18 +13,20 @@ class Point2D
 {
     public:
         Point2D();
+        Point2D(int x, int y);
         virtual ~Point2D();
 
-        void fill_point(int x, int y, int object, int scent_level);
-        string What_is_here();
+        Fill whatIsHere();
+        int getDistance(Point2D* point);
+        int getX();
+        int getY();
+        void set_fill(Fill fill);
 
     protected:
+        int m_x, m_y;
+        Fill m_fill;
 
     private:
-        int m_x;
-        int m_y;
-		enum Fill{Empty, Grass, Water, Branch, Food, Scent, BlackAnt, RedAnt, BlackAnthill, RedAnthill} m_Fill;
-        int m_scent_level;
 };
 
 #endif // POINT2D_H

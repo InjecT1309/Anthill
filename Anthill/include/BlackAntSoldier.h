@@ -3,7 +3,7 @@
 
 #include "BlackAnt.h"
 
-class BlackAntSoldier : public BlackAnt
+class BlackAntSoldier
 {
     public:
         BlackAntSoldier();

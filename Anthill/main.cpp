@@ -8,28 +8,11 @@ using std::cout;
 using std::endl;
 using std::string;
 
-
-
 int main()
 {
-    Map2D *Map = new Map2D();
+    Map2D *Map = new Map2D(25, 25);
 
-    int input, x, y;
-
-    while(input!=0)
-    {
-        cout << "1 - what is on the map \n";
-        cout << "0 - end \n";
-        cin >> input;
-        if(input==1)
-        {
-            cout << "x: ";
-            cin >> x;
-            cout << "y: ";
-            cin >> y;
-            cout << Map->WhatIsHere(x, y);
-        }
-    }
+    Map->mainLoopDebug();
 
     return 0;
 }

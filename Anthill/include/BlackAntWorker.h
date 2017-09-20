@@ -1,9 +1,7 @@
 #ifndef BLACKANTWORKER_H
 #define BLACKANTWORKER_H
 
-#include "BlackAnt.h"
-
-class BlackAntWorker : public BlackAnt
+class BlackAntWorker
 {
     public:
         BlackAntWorker();
