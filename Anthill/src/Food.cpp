@@ -3,21 +3,17 @@
 Food::Food(int x, int y) : Point2D(x, y)
 {
     m_fill=food;
-}
-
-void Food::set_food_to_max()
-{
     m_food_level=100;
 }
-void Food::lower_food()
+
+void Food::lowerFood()
 {
-    m_food_level-=2;
+    m_food_level-=5;
 }
-int Food::get_food_level()
+int Food::getFoodLevel()
 {
     return m_food_level;
 }
-
 
 Food::~Food()
 {

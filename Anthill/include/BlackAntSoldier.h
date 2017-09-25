@@ -1,12 +1,13 @@
 #ifndef BLACKANTSOLDIER_H
 #define BLACKANTSOLDIER_H
 
-#include "BlackAnt.h"
+#include "Ant.h"
+#include "Fill.h"
 
-class BlackAntSoldier
+class BlackAntSoldier : public Ant
 {
     public:
-        BlackAntSoldier();
+        BlackAntSoldier(int x, int y);
         virtual ~BlackAntSoldier();
 
     protected:

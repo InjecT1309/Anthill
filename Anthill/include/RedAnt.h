@@ -6,7 +6,7 @@
 class RedAnt : public Ant
 {
     public:
-        RedAnt();
+        RedAnt(int x, int y);
         virtual ~RedAnt();
 
     protected:

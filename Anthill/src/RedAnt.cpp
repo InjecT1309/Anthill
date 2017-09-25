@@ -1,8 +1,8 @@
 #include "../include/RedAnt.h"
 
-RedAnt::RedAnt()
+RedAnt::RedAnt(int x, int y) : Ant(x, y)
 {
-    //ctor
+    m_fill = red_ant;
 }
 
 RedAnt::~RedAnt()

@@ -6,6 +6,9 @@
 
 #include "Point2D.h"
 #include "Ant.h"
+#include "BlackAntWorker.h"
+#include "BlackAntSoldier.h"
+#include "RedAnt.h"
 #include "Fill.h"
 
 using std::vector;
@@ -25,8 +28,6 @@ class Anthill : public Point2D
 
     private:
         int m_ant_spawn_timer;
-
-
 };
 
 #endif // ANTHILL_H

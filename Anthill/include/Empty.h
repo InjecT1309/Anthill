@@ -11,13 +11,13 @@ using std::string;
 class Empty : public Point2D
 {
     public:
-        Empty();
         Empty(int x, int y);
+        Empty(int x, int y, int scent_level);
         virtual ~Empty();
 
-        void set_scent_to_max();
-        void lower_scent();
-        int get_scent_level();
+        void setScentToMax();
+        void lowerScent();
+        int getScentLevel();
 
     protected:
 

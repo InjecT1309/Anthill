@@ -1,7 +1,7 @@
 #include "../include/Map2D.h"
 
 Map2D::Map2D(int width, int height) : m_width(width), m_height(height),
-                                    m_how_much_obstacle(width*height/10), m_how_much_food(width*height/15)
+                                    m_how_much_obstacle(width*height/15), m_how_much_food(width*height/25)
 {
     srand(time(NULL));
 
@@ -23,16 +23,19 @@ void Map2D::mainLoopDebug()
 {
     while(true)
     {
-        for(int x=0; x<m_width; x++)
-        {
-            for(int y=0; y<m_height; y++)
-            {
-                cout << whatIsHereMapDebug(x, y) << " ";
-            }
-            cout << "|" << endl;
-        }
+//        m_display();
+        m_displayFood();
+//        m_displayScent();
 
-        m_spawn_ants();
+        m_ants_work();
+
+        m_black_anthill_ptr->lowerTimer();
+        m_red_anthill_ptr->lowerTimer();
+
+        if(m_black_anthill_ptr->getTimer()==0)  m_spawn_ants(m_black_anthill_ptr);
+        if(m_red_anthill_ptr->getTimer()==0)  m_spawn_ants(m_red_anthill_ptr);
+
+        m_clean_up();
 
         getwchar();
 
@@ -69,6 +72,76 @@ string Map2D::whatIsHereMapDebug(int x, int y)
     if(whatIsHere(x, y)==red_ant)           return "A";
 }
 
+void Map2D::m_display()
+{
+    for(int x=0; x<m_width; x++)
+    {
+        for(int y=0; y<m_height; y++)
+        {
+            cout << setw(3) << whatIsHereMapDebug(x, y);
+        }
+        cout << "|" << endl;
+    }
+    for(int x=0; x<m_width; x++)
+    {
+        cout << setw(3) << "_";
+    }
+    cout << endl;
+}
+void Map2D::m_displayFood()
+{
+    for(int x=0; x<m_width; x++)
+    {
+        for(int y=0; y<m_height; y++)
+        {
+            if(whatIsHere(x, y)==food)
+            {
+                cout << setw(3) << static_cast<Food*>(m_map[x][y])->getFoodLevel();
+            }
+            else if(whatIsHere(x, y)!=empty)
+            {
+                cout << setw(3) << whatIsHereMapDebug(x, y);
+            }
+            else    cout << setw(3) << " ";
+        }
+        cout << "|" << endl;
+    }
+    for(int x=0; x<m_width; x++)
+    {
+        cout << setw(3) << "_";
+    }
+    cout << endl;
+}
+void Map2D::m_displayScent()
+{
+    for(int x=0; x<m_width; x++)
+    {
+        for(int y=0; y<m_height; y++)
+        {
+            if(whatIsHere(x, y)==empty)
+            {
+                if(static_cast<Empty*>(m_map[x][y])->getScentLevel()!=0)
+                {
+                    cout << setw(3) << static_cast<Empty*>(m_map[x][y])->getScentLevel();
+                }
+                else
+                {
+                    cout << setw(3) << " ";
+                }
+            }
+            else if((whatIsHere(x, y)==black_ant_worker)||(whatIsHere(x, y)==black_anthill))
+            {
+                cout << setw(3) << whatIsHereMapDebug(x, y);
+            }
+        }
+        cout << "|" << endl;
+    }
+    for(int x=0; x<m_width; x++)
+    {
+        cout << setw(3) << "_";
+    }
+    cout << endl;
+}
 void Map2D::m_randomizeMap()
 {
     m_place_anthills();
@@ -135,18 +208,14 @@ void Map2D::m_place_food()
     }
 }
 
-void Map2D::m_spawn_ants()
+void Map2D::m_spawn_ants(Anthill* anthill_ptr)
 {
-    vector<Point2D*> empty_around_black_anthill = m_get_empty_around(m_black_anthill_ptr);
-    vector<Point2D*> empty_around_red_anthill = m_get_empty_around(m_red_anthill_ptr);
+    vector<Point2D*> empty_around_anthill = m_get_empty_around(anthill_ptr);
 
-    vector<Ant*> black_ants = m_black_anthill_ptr->spawn_ants(empty_around_black_anthill);
-    vector<Ant*> red_ants = m_red_anthill_ptr->spawn_ants(empty_around_red_anthill);
+    vector<Ant*> new_ants = anthill_ptr->spawn_ants(empty_around_anthill);
 
-    m_place_new_ants(black_ants);
-    m_place_new_ants(red_ants);
+    m_place_new_ants(new_ants);
 }
-
 void Map2D::m_place_new_ants(vector<Ant*> new_ant)
 {
     int x, y;
@@ -158,6 +227,30 @@ void Map2D::m_place_new_ants(vector<Ant*> new_ant)
         m_map[x][y] = new_ant[i];
         m_ant.push_back(new_ant[i]);
     }
+}
+void Map2D::m_ants_work()
+{
+    Point2D* new_ant_pos;
+
+    for(int i=0; i<m_ant.size(); i++)
+    {
+        m_tell_ant_whats_around(m_ant[i], m_ant[i]->getVision());
+        m_pick_up_ant(m_ant[i]);
+        m_ant[i]->work();
+        m_place_ant(m_ant[i]);
+    }
+}
+void Map2D::m_pick_up_ant(Ant* ant)
+{
+    m_map[ant->getX()][ant->getY()] = new Empty(ant->getX(), ant->getY());
+    if(ant->whatIsHere()==black_ant_worker)
+    {
+        m_map[ant->getX()][ant->getY()] = new Empty(ant->getX(), ant->getY(), 100);
+    }
+}
+void Map2D::m_place_ant(Ant* ant)
+{
+    m_map[ant->getX()][ant->getY()] = static_cast<Point2D*> (ant);
 }
 
 vector<Point2D*> Map2D::m_get_empty_around(Anthill* anthill_ptr)
@@ -180,35 +273,43 @@ vector<Point2D*> Map2D::m_get_empty_around(Anthill* anthill_ptr)
 
 void Map2D::m_tell_ant_whats_around(Ant* ant, int radious)
 {
-    int size_of_vector=0;
+    vector<Point2D*> whats_around;
 
     for(int x=0; x<m_width; x++)
     {
         for(int y=0; y<m_height; y++)
         {
-            if(ant->getDistance(m_map[x][y])<=radious)
+            if(ant->getDistance(m_map[x][y])<radious)
             {
-                size_of_vector++;
+                whats_around.push_back(m_map[x][y]);
             }
         }
     }
 
-    vector<Point2D*> whats_around(size_of_vector);
-    int vector_iter=0;
-
+    ant->setVisible(whats_around);
+}
+void Map2D::m_clean_up()
+{
     for(int x=0; x<m_width; x++)
     {
         for(int y=0; y<m_height; y++)
         {
-            if(ant->getDistance(m_map[x][y])<=radious)
+            if(m_map[x][y]->whatIsHere()==empty)
             {
-                whats_around[vector_iter]=m_map[x][y];
-                vector_iter++;
+                if(static_cast<Empty*>(m_map[x][y])->getScentLevel()>0)  static_cast<Empty*>(m_map[x][y])->lowerScent();
+            }
+            if(m_map[x][y]->whatIsHere()==food)
+            {
+                if(static_cast<Food*>(m_map[x][y])->getFoodLevel()<=0)  m_map[x][y] = new Empty(x, y);
+            }
+            if((m_map[x][y]->whatIsHere()==black_ant_worker)||
+                (m_map[x][y]->whatIsHere()==black_ant_solider)||
+                (m_map[x][y]->whatIsHere()==red_ant))
+            {
+                if(static_cast<Ant*>(m_map[x][y])->checkIfDead()==true)  m_map[x][y] = new Empty(x, y);
             }
         }
     }
-
-    ant->setWhatsAround(&whats_around);
 }
 
 Map2D::~Map2D()

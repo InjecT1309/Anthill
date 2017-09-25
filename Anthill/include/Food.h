@@ -14,9 +14,8 @@ class Food : public Point2D
         Food(int x, int y);
         virtual ~Food();
 
-        void set_food_to_max();
-        void lower_food();
-        int get_food_level();
+        void lowerFood();
+        int getFoodLevel();
 
     protected:
 

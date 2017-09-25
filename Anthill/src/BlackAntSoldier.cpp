@@ -1,8 +1,8 @@
 #include "../include/BlackAntSoldier.h"
 
-BlackAntSoldier::BlackAntSoldier()
+BlackAntSoldier::BlackAntSoldier(int x, int y) : Ant(x, y)
 {
-    //ctor
+    m_fill = black_ant_solider;
 }
 
 BlackAntSoldier::~BlackAntSoldier()
